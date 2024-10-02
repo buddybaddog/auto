@@ -1,0 +1,32 @@
+name: Auto Commit every 5 minutes
+
+# Thiết lập lịch trình để tự động chạy workflow
+on:
+  schedule:
+    - cron: "*/5 * * * *"  # Chạy mỗi 5 phút
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest  # Sử dụng môi trường Ubuntu để chạy workflow
+    steps:
+      # Bước 1: Clone repository
+      - name: Checkout repository content
+        uses: actions/checkout@v2
+
+      # Bước 2: Cấu hình Git (thêm thông tin tài khoản để commit)
+      - name: Set up Git config
+        run: |
+          git config user.name "humhliao"
+          git config user.email "humhliao@gmail.com"
+
+      # Bước 3: Thực hiện commit tự động
+      - name: Auto commit
+        run: |
+          # Tạo thay đổi trong file (ví dụ thêm nội dung vào file log)
+          echo "Auto update $(date)" >> update.log
+          # Thêm tất cả các thay đổi
+          git add .
+          # Commit với message tự động
+          git commit -m "Auto commit $(date)"
+          # Push thay đổi lên GitHub
+          git push
