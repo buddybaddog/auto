@@ -1,32 +1,35 @@
 name: Auto Commit every 5 minutes
-
 # Thiết lập lịch trình để tự động chạy workflow
 on:
   schedule:
+    # cron: Chạy mỗi 5 phút (có thể đổi lại sau khi test)
     - cron: "* * * * *"
 
 jobs:
   commit:
-    runs-on: ubuntu-latest  # Sử dụng môi trường Ubuntu để chạy workflow
+    runs-on: ubuntu-latest # Sử dụng môi trường Ubuntu để chạy workflow
     steps:
-      # Bước 1: Clone repository
-      - name: Checkout repository content
-        uses: actions/checkout@v2
+    # Bước 1: Clone repository
+    - name: Checkout repository content
+      uses: actions/checkout@v2
 
-      # Bước 2: Cấu hình Git (thêm thông tin tài khoản để commit)
-      - name: Set up Git config
-        run: |
-          git config user.name "humhliao"
-          git config user.email "humhliao@gmail.com"
+    # Bước 2: Cấu hình Git (thêm thông tin tài khoản để commit)
+    - name: Set up Git config
+      run: |
+        git config user.name "humhiao"
+        git config user.email "humliao@gmail.com"
 
-      # Bước 3: Thực hiện commit tự động
-      - name: Auto commit
-        run: |
-          # Tạo thay đổi trong file (ví dụ thêm nội dung vào file log)
-          echo "Auto update $(date)" >> update.log
-          # Thêm tất cả các thay đổi
-          git add .
-          # Commit với message tự động
-          git commit -m "Auto commit $(date)"
-          # Push thay đổi lên GitHub
-          git push
+    # Bước 3: Thực hiện commit tự động
+    - name: Auto commit
+      run: |
+        # Tạo thay đổi trong file (ví dụ thêm nội dung vào file log)
+        echo "Auto update $(date)" >> update.log
+        # Thêm tất cả các thay đổi
+        git add .
+        # Commit với message tự động
+        git commit -m "Auto commit $(date)"
+
+    # Bước 4: Push thay đổi lên GitHub với GITHUB_TOKEN
+    - name: Push changes
+      run: |
+        git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/buddybaddog/auto.git HEAD:master
