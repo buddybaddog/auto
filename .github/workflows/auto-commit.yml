@@ -3,7 +3,7 @@ name: Auto Commit every 5 minutes
 # Thiết lập lịch trình để tự động chạy workflow
 on:
   schedule:
-    - cron: "*/5 * * * *"  # Chạy mỗi 5 phút
+    - cron: "* * * * *"
 
 jobs:
   commit:
